@@ -5,128 +5,136 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{{TITLE}} — {{SCHOOL}}</title>
 <meta name="description" content="{{DESC}}">
-<meta name="theme-color" content="#16225e">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2316225e'/%3E%3Cpath d='M16 7l7 5v8l-7 5-7-5v-8z' fill='%23e2b04a'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0c486c">
+<meta property="og:image" content="img/installation.jpg">
+<link rel="icon" href="img/crest.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Philosopher:wght@400;700&family=Spectral:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
-<link rel="preload" href="audio/timings.json" as="fetch" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
+/* Tokens taken from vosiq.uz so the page reads as part of the school's site */
 :root{
-  --lapis:#16225e; --lapis-deep:#0e1640; --lapis-lift:#22327f;
-  --gold:#e2b04a; --gold-pale:#f3dfa2; --paper:#eef0f8; --mist:#a9b1d6;
-  --measure:34rem; --gutter:clamp(16px,5vw,28px);
+  --ink:#0a1a2f; --primary:#0c486c; --primary-700:#072d45;
+  --azure:#2ea8f0; --azure-soft:#7cc6f5; --azure-tint:#e8f5fe; --azure-text:#2178ac;
+  --gold:#c09c78; --gold-text:#866d54;
+  --canvas:#f5f8fc; --surface:#fff; --hairline:#e4eaf2;
+  --fg:#0e1b2a; --fg-muted:#5b6b7f; --fg-inv:#f5f8fc; --fg-inv-muted:#a8bdd4;
+  --display:Manrope, Inter, system-ui, sans-serif; --sans:Inter, system-ui, sans-serif;
+  --measure:40rem; --gutter:16px;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{
-  margin:0; color:var(--paper); background:var(--lapis-deep);
-  background-image:radial-gradient(120% 60% at 50% 0%, var(--lapis-lift) 0%, var(--lapis) 38%, var(--lapis-deep) 100%);
-  background-attachment:fixed;
-  font:300 1.1875rem/1.72 Spectral, Georgia, serif;
-  padding-bottom:calc(112px + env(safe-area-inset-bottom));
-}
-main{max-width:var(--measure); margin:0 auto; padding:0 var(--gutter)}
+body{margin:0; background:var(--canvas); color:var(--fg); font:400 1.0625rem/1.7 var(--sans);
+  padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+img{display:block; max-width:100%}
+.wrap{max-width:var(--measure); margin:0 auto; padding:0 var(--gutter)}
 
-/* ---- hero: the installation itself ---- */
-.hero{text-align:center; padding:clamp(24px,6vh,56px) 0 8px}
-.emblem{width:min(78vw,340px); height:auto; display:block; margin:0 auto; overflow:visible}
-.emblem .rays{transition:opacity .8s ease; opacity:.35}
-.emblem .halo{transition:opacity .8s ease; opacity:.25}
-.playing .emblem .rays{opacity:.9}
-.playing .emblem .halo{opacity:.7}
-.orbit-dot{offset-rotate:0deg; animation:orbit var(--t) linear infinite; animation-play-state:paused}
-.playing .orbit-dot{animation-play-state:running}
-@keyframes orbit{to{offset-distance:100%}}
-@media (prefers-reduced-motion:reduce){.orbit-dot{animation:none}}
-.school{font:400 1rem/1.3 Philosopher, sans-serif; color:var(--gold); letter-spacing:.04em; margin:18px 0 4px}
-h1{font:700 clamp(2.4rem,11vw,3.4rem)/1.05 Philosopher, sans-serif; margin:0 0 12px; color:var(--gold-pale)}
-.listen{
-  display:inline-flex; align-items:center; gap:12px; margin:14px 0 8px;
-  font:700 1.1rem Philosopher, sans-serif; color:var(--lapis-deep); background:var(--gold);
-  border:0; border-radius:999px; padding:14px 26px 14px 18px; cursor:pointer;
-  box-shadow:0 0 0 6px rgba(226,176,74,.18);
-}
-.listen svg{width:26px; height:26px}
-.hint{font-size:.9rem; color:var(--mist); margin:4px 0 0}
+/* header, as on vosiq.uz */
+.top{background:var(--surface); border-bottom:1px solid var(--hairline)}
+.top .wrap{display:flex; align-items:center; gap:10px; height:60px}
+.top img{width:38px; height:38px}
+.brand{display:flex; flex-direction:column; line-height:1.05}
+.brand b{font:800 1.05rem var(--display); color:var(--primary); letter-spacing:-.01em}
+.brand small{font:600 .6rem var(--sans); color:var(--gold-text); letter-spacing:.14em; text-transform:uppercase; margin-top:3px}
 
-/* ---- text ---- */
-.text{margin-top:36px}
-.seg{cursor:pointer; transition:color .4s ease, opacity .4s ease; border-radius:6px}
-.started .seg{opacity:.55}
-.started .seg.active{opacity:1}
-p.seg{margin:0 0 1.1em; hyphens:auto}
-p.seg:first-of-type::first-letter{font:700 3.3em/.85 Philosopher, sans-serif; float:left; margin:.08em .1em 0 0; color:var(--gold)}
-h2.seg{font:700 1.55rem/1.2 Philosopher, sans-serif; color:var(--gold-pale); margin:2.2em 0 .6em; display:flex; align-items:center; gap:12px}
-h2.seg::before{content:""; flex:0 0 28px; height:28px; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-14 -14 28 28' fill='none' stroke='%23e2b04a' stroke-width='1.3'%3E%3Cellipse rx='12' ry='4.5'/%3E%3Cellipse rx='12' ry='4.5' transform='rotate(60)'/%3E%3Cellipse rx='12' ry='4.5' transform='rotate(-60)'/%3E%3Ccircle r='2.6' fill='%23e2b04a' stroke='none'/%3E%3C/svg%3E") center/contain no-repeat}
-h1.seg{cursor:pointer}
-p.quote{font:400 1.6rem/1.35 Philosopher, sans-serif; color:var(--gold-pale); text-align:center; margin:1.6em 0; padding:1.1em 0; border-top:1px solid rgba(226,176,74,.4); border-bottom:1px solid rgba(226,176,74,.4)}
-.seg:focus-visible,.listen:focus-visible,.player button:focus-visible,.player input:focus-visible{outline:2px solid var(--gold-pale); outline-offset:4px}
-footer{margin:48px 0 0; text-align:center; color:var(--mist); font-size:.9rem}
+/* hero: the installation itself */
+.hero{position:relative; min-height:min(78svh,640px); display:flex; align-items:flex-end; color:#fff; overflow:hidden; background:var(--ink)}
+.hero img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:50% 38%}
+.hero::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,26,47,0) 30%, rgba(10,26,47,.55) 58%, rgba(10,26,47,.94) 100%)}
+.hero .wrap{position:relative; z-index:1; width:100%; padding-bottom:28px}
+.badge{display:inline-flex; align-items:center; gap:8px; font:600 .7rem var(--sans); letter-spacing:.14em; text-transform:uppercase;
+  color:var(--azure-soft); border:1px solid rgba(124,198,245,.4); background:rgba(10,26,47,.35); border-radius:999px; padding:6px 12px; margin:0 0 14px}
+.badge::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--azure)}
+h1{font:800 clamp(2.4rem,11vw,3.5rem)/1.04 var(--display); letter-spacing:-.025em; margin:0 0 10px}
+.lede{color:var(--fg-inv-muted); margin:0 0 22px; font-size:1rem}
+.listen{display:inline-flex; align-items:center; justify-content:center; gap:10px; width:100%; max-width:320px; height:52px;
+  font:600 1rem var(--sans); color:var(--fg); background:#fff; border:0; border-radius:12px; cursor:pointer}
+.listen svg{width:20px; height:20px; color:var(--primary)}
 
-/* ---- player ---- */
-.player{
-  position:fixed; left:0; right:0; bottom:0; z-index:5;
-  padding:12px var(--gutter) calc(12px + env(safe-area-inset-bottom));
-  background:rgba(14,22,64,.86); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px);
-  border-top:1px solid rgba(226,176,74,.25);
-}
-.player-in{max-width:var(--measure); margin:0 auto; display:grid; grid-template-columns:auto 1fr auto; gap:14px; align-items:center}
-.pp{width:56px; height:56px; border-radius:50%; border:0; background:var(--gold); color:var(--lapis-deep); display:grid; place-items:center; cursor:pointer}
-.pp svg{width:24px; height:24px}
-.track{display:flex; flex-direction:column; gap:4px; min-width:0}
-.now{font:400 .95rem/1.2 Philosopher, sans-serif; color:var(--gold-pale); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-input[type=range]{width:100%; margin:0; accent-color:var(--gold); height:28px}
-.time{font-size:.8rem; color:var(--mist); font-variant-numeric:tabular-nums}
-.speed{min-width:52px; height:40px; border-radius:20px; border:1px solid rgba(226,176,74,.5); background:transparent; color:var(--gold-pale); font:500 .95rem Spectral, serif; cursor:pointer}
-.err{color:var(--gold-pale); font-size:.9rem}
+/* content */
+main.wrap{padding-top:36px; padding-bottom:8px}
+.eyebrow{display:flex; align-items:center; gap:10px; font:600 .72rem var(--sans); letter-spacing:.16em; text-transform:uppercase; color:var(--azure-text); margin:0 0 14px}
+.eyebrow::before{content:""; width:28px; height:1px; background:var(--azure)}
+.intro p.seg{font:500 1.2rem/1.6 var(--display); color:var(--fg); margin:0 0 28px}
+.card{background:var(--surface); border:1px solid var(--hairline); border-radius:16px; padding:22px 20px 8px; margin:0 0 16px;
+  box-shadow:0 1px 2px rgba(10,26,47,.04); transition:border-color .3s}
+.card.current{border-color:var(--azure-soft)}
+.icon{width:40px; height:40px; border-radius:10px; background:var(--azure-tint); display:grid; place-items:center; margin-bottom:14px}
+.icon svg{width:22px; height:22px; fill:none; stroke:var(--primary); stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round}
+h2{font:700 1.35rem/1.25 var(--display); letter-spacing:-.01em; margin:0 0 10px; color:var(--fg)}
+.card p.seg{color:var(--fg-muted); margin:0 0 16px}
+p.quote{font:700 1.2rem/1.45 var(--display); color:#fff !important; background:var(--primary); border-radius:12px; padding:18px 18px; margin:4px -6px 16px !important}
+
+/* narration follow-along */
+.seg{cursor:pointer; position:relative; transition:color .3s}
+.card p.seg.active{color:var(--fg)}
+.card p.seg.active:not(.quote)::before{content:""; position:absolute; left:-12px; top:.35em; bottom:.35em; width:3px; border-radius:2px; background:var(--azure)}
+.intro p.seg.active::before{content:""; position:absolute; left:-12px; top:.35em; bottom:.35em; width:3px; border-radius:2px; background:var(--azure)}
+p.quote.active{background:var(--primary-700)}
+.seg:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--azure); outline-offset:3px; border-radius:4px}
+
+footer{background:var(--ink); color:var(--fg-inv-muted); margin-top:32px; padding:28px 0 36px; font-size:.9rem}
+footer .wrap{display:flex; align-items:center; gap:12px}
+footer img{width:36px; height:36px}
+footer b{display:block; color:var(--fg-inv); font:700 .95rem var(--display)}
+footer a{color:var(--azure-soft)}
+
+/* player */
+.player{position:fixed; left:0; right:0; bottom:0; z-index:5; background:rgba(255,255,255,.94);
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); border-top:1px solid var(--hairline);
+  padding:10px 0 calc(10px + env(safe-area-inset-bottom)); box-shadow:0 -4px 20px rgba(10,26,47,.06)}
+.player .wrap{display:grid; grid-template-columns:auto 1fr auto; gap:12px; align-items:center}
+.pp{width:48px; height:48px; border-radius:50%; border:0; background:var(--primary); color:#fff; display:grid; place-items:center; cursor:pointer}
+.pp svg{width:20px; height:20px}
+.track{min-width:0}
+.now{font:600 .85rem/1.2 var(--display); color:var(--fg); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.now.err{color:#b42318}
+input[type=range]{width:100%; margin:4px 0 0; accent-color:var(--primary); height:22px}
+.time{font-size:.75rem; color:var(--fg-muted); font-variant-numeric:tabular-nums}
+.speed{height:36px; min-width:50px; border-radius:10px; border:1px solid var(--hairline); background:var(--surface); color:var(--fg); font:600 .85rem var(--sans); cursor:pointer}
 </style>
 </head>
 <body>
-<main>
-  <header class="hero">
-    <!-- The installation, drawn: faceted sun (knowledge) inside three crossing orbits (atom + solar system). -->
-    <svg class="emblem" viewBox="-160 -160 320 320" role="img" aria-label="Installyatsiya: markazda ko‘p qirrali quyosh, atrofida kesishgan orbitalar">
-      <defs>
-        <radialGradient id="glow"><stop offset="0" stop-color="#f3dfa2" stop-opacity=".9"/><stop offset=".35" stop-color="#e2b04a" stop-opacity=".35"/><stop offset="1" stop-color="#e2b04a" stop-opacity="0"/></radialGradient>
-      </defs>
-      <circle class="halo" r="150" fill="url(#glow)"/>
-      <g class="rays" stroke="#f3dfa2" stroke-width="1" stroke-linecap="round">{{RAYS}}</g>
-      <g fill="none" stroke="#e2b04a" stroke-width="1.4" opacity=".85">
-        <ellipse rx="140" ry="46"/>
-        <ellipse rx="140" ry="46" transform="rotate(60)"/>
-        <ellipse rx="140" ry="46" transform="rotate(-60)"/>
-      </g>
-      {{FACETS}}
-      <g fill="#f3dfa2">
-        <circle class="orbit-dot" r="5" style="--t:9s;offset-path:path('{{O1}}')"/>
-        <circle class="orbit-dot" r="4" style="--t:13s;offset-path:path('{{O2}}');animation-delay:-4s"/>
-        <circle class="orbit-dot" r="4.5" style="--t:11s;offset-path:path('{{O3}}');animation-delay:-7s"/>
-      </g>
-    </svg>
-    <p class="school">{{SCHOOL}}</p>
+<header class="top">
+  <div class="wrap">
+    <img src="img/crest.png" alt="" width="38" height="38">
+    <div class="brand"><b>VOSIQ</b><small>International School</small></div>
+  </div>
+</header>
+
+<section class="hero">
+  <img src="img/installation.jpg" alt="Atriumdagi installyatsiya: markazda ko‘p qirrali shakl, atrofida kesishgan yorug‘ orbitalar va sayyoralar" fetchpriority="high">
+  <div class="wrap">
+    <p class="badge">Atrium installyatsiyasi</p>
+    {{H1}}
+    <p class="lede">Audio qo‘llanma, {{MINUTES}} daqiqa. Matnning istalgan qismini bosing — o‘sha joydan eshitasiz.</p>
     <button class="listen" id="listen" type="button">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg>
       <span>Tinglash</span>
     </button>
-    <p class="hint">{{MINUTES}} daqiqa. Matnning istalgan qismini bosib, o‘sha joydan tinglang.</p>
-  </header>
+  </div>
+</section>
 
-  <article class="text" id="text">
+<main class="wrap" id="text">
 {{BODY}}
-  </article>
-  <footer>{{SCHOOL}}</footer>
 </main>
 
-<div class="player" id="player">
-  <div class="player-in">
+<footer>
+  <div class="wrap">
+    <img src="img/crest.png" alt="" width="36" height="36">
+    <div><b>{{SCHOOL}}</b><a href="https://vosiq.uz">vosiq.uz</a></div>
+  </div>
+</footer>
+
+<div class="player">
+  <div class="wrap">
     <button class="pp" id="pp" type="button" aria-label="Tinglash">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path id="ppIcon" fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg>
     </button>
     <div class="track">
       <div class="now" id="now">{{TITLE}}</div>
       <input type="range" id="seek" min="0" max="{{DURATION}}" step="0.1" value="0" aria-label="Audio holati">
-      <div class="time"><span id="cur">0:00</span> / <span id="dur">{{DURSTR}}</span></div>
+      <div class="time"><span id="cur">0:00</span> / {{DURSTR}}</div>
     </div>
     <button class="speed" id="speed" type="button" aria-label="Tezlik">1×</button>
   </div>
@@ -136,36 +144,38 @@ input[type=range]{width:100%; margin:0; accent-color:var(--gold); height:28px}
 <script>
 (() => {
   const PLAY = "M8 5.5v13l11-6.5z", PAUSE = "M7 5h3.5v14H7zM13.5 5H17v14h-3.5z";
-  const a = document.getElementById("audio"), segs = [...document.querySelectorAll(".seg")];
+  const a = document.getElementById("audio");
+  const segs = []; document.querySelectorAll(".seg").forEach(el => { segs[+el.dataset.i] = el; });
   const pp = document.getElementById("pp"), icon = document.getElementById("ppIcon");
   const seek = document.getElementById("seek"), cur = document.getElementById("cur");
-  const now = document.getElementById("now"), listen = document.getElementById("listen");
+  const now = document.getElementById("now"), listen = document.getElementById("listen"), label = listen.querySelector("span");
   const speeds = [1, 1.25, 0.8]; let si = 0, timings = [], active = -1, userScrollAt = 0, seeking = false;
 
   fetch("audio/timings.json?v={{VER}}").then(r => r.json()).then(j => { timings = j.segments; }).catch(() => {});
   const fmt = s => { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
 
   function toggle() {
-    if (a.paused) a.play().catch(() => { now.textContent = "Audio yuklanmadi — internetni tekshiring"; now.className = "now err"; });
+    if (a.paused) a.play().catch(() => { now.textContent = "Audio yuklanmadi. Internetni tekshirib, qayta bosing."; now.classList.add("err"); });
     else a.pause();
   }
   function setActive(i) {
     if (i === active) return;
-    if (active >= 0) segs[active].classList.remove("active");
+    if (active >= 0) { segs[active].classList.remove("active"); segs[active].closest(".card")?.classList.remove("current"); }
     active = i;
     if (i < 0) return;
-    const el = segs[i]; el.classList.add("active");
-    const heading = [...segs.slice(0, i + 1)].reverse().find(s => s.tagName !== "P");
-    now.textContent = heading ? heading.textContent : "";
+    const el = segs[i]; el.classList.add("active"); el.closest(".card")?.classList.add("current");
+    const head = el.closest(".card")?.querySelector("h2");
+    now.textContent = head ? head.textContent : "{{TITLE}}";
     // follow the narration unless the visitor scrolled in the last few seconds
     if (!a.paused && Date.now() - userScrollAt > 4000) {
       const r = el.getBoundingClientRect();
-      if (r.top < 60 || r.bottom > innerHeight - 130) el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
+      if (r.top < 70 || r.bottom > innerHeight - 110)
+        el.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "center" });
     }
   }
 
   pp.onclick = toggle;
-  listen.onclick = () => { if (a.paused) toggle(); };
+  listen.onclick = toggle;
   document.getElementById("speed").onclick = e => { si = (si + 1) % speeds.length; a.playbackRate = speeds[si]; e.currentTarget.textContent = speeds[si] + "×"; };
   segs.forEach((el, i) => {
     el.tabIndex = 0;
@@ -178,26 +188,19 @@ input[type=range]{width:100%; margin:0; accent-color:var(--gold); height:28px}
   seek.addEventListener("input", () => { seeking = true; cur.textContent = fmt(seek.value); });
   seek.addEventListener("change", () => { a.currentTime = +seek.value; seeking = false; });
 
-  a.addEventListener("play", () => {
-    document.body.classList.add("playing", "started"); icon.setAttribute("d", PAUSE);
-    pp.setAttribute("aria-label", "Pauza"); listen.querySelector("span").textContent = "Tinglanmoqda";
-    now.className = "now";
-  });
-  a.addEventListener("pause", () => {
-    document.body.classList.remove("playing"); icon.setAttribute("d", PLAY);
-    pp.setAttribute("aria-label", "Tinglash"); listen.querySelector("span").textContent = "Davom ettirish";
-  });
-  a.addEventListener("ended", () => { listen.querySelector("span").textContent = "Qayta tinglash"; setActive(-1); document.body.classList.remove("started"); });
+  a.addEventListener("play", () => { icon.setAttribute("d", PAUSE); pp.setAttribute("aria-label", "Pauza"); label.textContent = "Pauza"; now.classList.remove("err"); });
+  a.addEventListener("pause", () => { icon.setAttribute("d", PLAY); pp.setAttribute("aria-label", "Tinglash"); label.textContent = a.ended ? "Qayta tinglash" : "Davom ettirish"; });
+  a.addEventListener("ended", () => { setActive(-1); label.textContent = "Qayta tinglash"; });
   a.addEventListener("timeupdate", () => {
     const t = a.currentTime;
     if (!seeking) { seek.value = t; cur.textContent = fmt(t); }
     let i = -1;
     for (let k = 0; k < timings.length; k++) if (t >= timings[k].start - 0.05) i = k;
-    setActive(i);
+    if (!a.ended) setActive(i);
   });
 
   if ("mediaSession" in navigator) {
-    navigator.mediaSession.metadata = new MediaMetadata({ title: "{{TITLE}}", artist: "{{SCHOOL}}" });
+    navigator.mediaSession.metadata = new MediaMetadata({ title: "{{TITLE}}", artist: "{{SCHOOL}}", artwork: [{ src: "img/crest.png", sizes: "256x256", type: "image/png" }] });
     navigator.mediaSession.setActionHandler("play", () => a.play());
     navigator.mediaSession.setActionHandler("pause", () => a.pause());
   }

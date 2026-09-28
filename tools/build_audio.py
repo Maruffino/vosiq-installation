@@ -3,7 +3,7 @@
 Usage: .venv/bin/python tools/build_audio.py [voice]
 Voices: uz-UZ-SardorNeural (male), uz-UZ-MadinaNeural (female)
 """
-import asyncio, json, subprocess, sys, tempfile
+import asyncio, json, re, subprocess, sys, tempfile
 from pathlib import Path
 
 import edge_tts
@@ -12,6 +12,21 @@ ROOT = Path(__file__).resolve().parent.parent
 VOICE = sys.argv[1] if len(sys.argv) > 1 else "uz-UZ-SardorNeural"
 PAUSE = {"h1": 0.9, "h2": 0.6, "p": 0.8}   # silence after each segment, seconds
 RATE = "-5%"                                 # a touch slower than default for a public space
+
+# Spoken-only respellings; the page still shows content.json as written.
+SAY = [
+    ("VOSIQ International School", "Vosiq Interneshnl Skul"),  # English, not Uzbek letter-by-letter
+    ("ILMdir", "ilmdir"),                                       # caps would be spelled out
+    ("(atom)", "(atoom)"), ("(atom ", "(atoom "),                 # stress on the last syllable
+]
+
+
+def speakable(text):
+    for a, b in SAY:
+        text = text.replace(a, b)
+    # o‘ / g‘ as U+02BB, the official Uzbek letter; a plain ' reads as a short glottal stop
+    text = re.sub(r"([OoGg])['‘’`]", "\\1\u02bb", text)
+    return re.sub(r"['’`]", "\u02bc", text)
 
 
 def duration(path):
@@ -26,8 +41,7 @@ async def main():
     parts, timings, t = [], [], 0.0
     for i, seg in enumerate(content["segments"]):
         clip = tmp / f"{i:02d}.mp3"
-        # "ILMdir" would be spelled out letter by letter; speak it as a word
-        text = seg["text"].replace("ILMdir", "ilmdir")
+        text = speakable(seg["text"])
         await edge_tts.Communicate(text, VOICE, rate=RATE).save(str(clip))
         wav = tmp / f"{i:02d}.wav"
         pad = PAUSE[seg["type"]]
