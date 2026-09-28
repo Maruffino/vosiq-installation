@@ -1,13 +1,21 @@
 <!doctype html>
-<html lang="uz">
+<html lang="{{LANG}}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{{TITLE}} — {{SCHOOL}}</title>
 <meta name="description" content="{{DESC}}">
 <meta name="theme-color" content="#0c486c">
-<meta property="og:image" content="img/installation.jpg">
-<link rel="icon" href="img/crest.png">
+<meta property="og:image" content="{{P}}img/installation.jpg">
+<link rel="icon" href="{{P}}img/crest.png">
+<script>
+  // the QR opens the Uzbek page; send returning visitors to the language they picked last time
+  try {
+    const saved = localStorage.getItem("lang");
+    if ("{{LANG}}" === "{{DEFAULT}}" && saved && saved !== "{{DEFAULT}}" && !location.search.includes("stay"))
+      location.replace(saved + "/");
+  } catch (e) {}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
@@ -32,6 +40,9 @@ img{display:block; max-width:100%}
 /* header, as on vosiq.uz */
 .top{background:var(--surface); border-bottom:1px solid var(--hairline)}
 .top .wrap{display:flex; align-items:center; gap:10px; height:60px}
+.langs{margin-left:auto; display:flex; gap:2px; padding:3px; border:1px solid var(--hairline); border-radius:10px; background:var(--canvas)}
+.langs a{font:600 .8rem var(--sans); color:var(--fg-muted); text-decoration:none; padding:7px 10px; border-radius:7px; min-width:40px; text-align:center}
+.langs a[aria-current]{background:var(--primary); color:#fff}
 .top img{width:38px; height:38px}
 .brand{display:flex; flex-direction:column; line-height:1.05}
 .brand b{font:800 1.05rem var(--display); color:var(--primary); letter-spacing:-.01em}
@@ -97,20 +108,23 @@ input[type=range]{width:100%; margin:4px 0 0; accent-color:var(--primary); heigh
 <body>
 <header class="top">
   <div class="wrap">
-    <img src="img/crest.png" alt="" width="38" height="38">
+    <img src="{{P}}img/crest.png" alt="" width="38" height="38">
     <div class="brand"><b>VOSIQ</b><small>International School</small></div>
+    <nav class="langs" aria-label="{{UI_LANG_LABEL}}">
+      {{SWITCH}}
+    </nav>
   </div>
 </header>
 
 <section class="hero">
-  <img src="img/installation.jpg" alt="Atriumdagi installyatsiya: markazda ko‘p qirrali shakl, atrofida kesishgan yorug‘ orbitalar va sayyoralar" fetchpriority="high">
+  <img src="{{P}}img/installation.jpg" alt="{{UI_PHOTO_ALT}}" fetchpriority="high">
   <div class="wrap">
-    <p class="badge">Atrium installyatsiyasi</p>
+    <p class="badge">{{UI_BADGE}}</p>
     {{H1}}
-    <p class="lede">Audio qo‘llanma, {{MINUTES}} daqiqa. Matnning istalgan qismini bosing — o‘sha joydan eshitasiz.</p>
+    <p class="lede">{{UI_LEDE}}</p>
     <button class="listen" id="listen" type="button">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg>
-      <span>Tinglash</span>
+      <span>{{UI_LISTEN}}</span>
     </button>
   </div>
 </section>
@@ -121,28 +135,29 @@ input[type=range]{width:100%; margin:4px 0 0; accent-color:var(--primary); heigh
 
 <footer>
   <div class="wrap">
-    <img src="img/crest.png" alt="" width="36" height="36">
+    <img src="{{P}}img/crest.png" alt="" width="36" height="36">
     <div><b>{{SCHOOL}}</b><a href="https://vosiq.uz">vosiq.uz</a></div>
   </div>
 </footer>
 
 <div class="player">
   <div class="wrap">
-    <button class="pp" id="pp" type="button" aria-label="Tinglash">
+    <button class="pp" id="pp" type="button" aria-label="{{UI_LISTEN}}">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path id="ppIcon" fill="currentColor" d="M8 5.5v13l11-6.5z"/></svg>
     </button>
     <div class="track">
       <div class="now" id="now">{{TITLE}}</div>
-      <input type="range" id="seek" min="0" max="{{DURATION}}" step="0.1" value="0" aria-label="Audio holati">
+      <input type="range" id="seek" min="0" max="{{DURATION}}" step="0.1" value="0" aria-label="{{UI_SEEK}}">
       <div class="time"><span id="cur">0:00</span> / {{DURSTR}}</div>
     </div>
-    <button class="speed" id="speed" type="button" aria-label="Tezlik">1×</button>
+    <button class="speed" id="speed" type="button" aria-label="{{UI_SPEED}}">1×</button>
   </div>
 </div>
-<audio id="audio" src="audio/narration.mp3?v={{VER}}" preload="metadata"></audio>
+<audio id="audio" src="{{P}}audio/{{LANG}}/narration.mp3?v={{VER}}" preload="metadata"></audio>
 
 <script>
 (() => {
+  const UI = {listen: "{{UI_LISTEN}}", pause: "{{UI_PAUSE}}", resume: "{{UI_RESUME}}", replay: "{{UI_REPLAY}}", error: "{{UI_ERROR}}"};
   const PLAY = "M8 5.5v13l11-6.5z", PAUSE = "M7 5h3.5v14H7zM13.5 5H17v14h-3.5z";
   const a = document.getElementById("audio");
   const segs = []; document.querySelectorAll(".seg").forEach(el => { segs[+el.dataset.i] = el; });
@@ -151,11 +166,11 @@ input[type=range]{width:100%; margin:4px 0 0; accent-color:var(--primary); heigh
   const now = document.getElementById("now"), listen = document.getElementById("listen"), label = listen.querySelector("span");
   const speeds = [1, 1.25, 0.8]; let si = 0, timings = [], active = -1, userScrollAt = 0, seeking = false;
 
-  fetch("audio/timings.json?v={{VER}}").then(r => r.json()).then(j => { timings = j.segments; }).catch(() => {});
+  fetch("{{P}}audio/{{LANG}}/timings.json?v={{VER}}").then(r => r.json()).then(j => { timings = j.segments; }).catch(() => {});
   const fmt = s => { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
 
   function toggle() {
-    if (a.paused) a.play().catch(() => { now.textContent = "Audio yuklanmadi. Internetni tekshirib, qayta bosing."; now.classList.add("err"); });
+    if (a.paused) a.play().catch(() => { now.textContent = UI.error; now.classList.add("err"); });
     else a.pause();
   }
   function setActive(i) {
@@ -188,9 +203,10 @@ input[type=range]{width:100%; margin:4px 0 0; accent-color:var(--primary); heigh
   seek.addEventListener("input", () => { seeking = true; cur.textContent = fmt(seek.value); });
   seek.addEventListener("change", () => { a.currentTime = +seek.value; seeking = false; });
 
-  a.addEventListener("play", () => { icon.setAttribute("d", PAUSE); pp.setAttribute("aria-label", "Pauza"); label.textContent = "Pauza"; now.classList.remove("err"); });
-  a.addEventListener("pause", () => { icon.setAttribute("d", PLAY); pp.setAttribute("aria-label", "Tinglash"); label.textContent = a.ended ? "Qayta tinglash" : "Davom ettirish"; });
-  a.addEventListener("ended", () => { setActive(-1); label.textContent = "Qayta tinglash"; });
+  a.addEventListener("play", () => { icon.setAttribute("d", PAUSE); pp.setAttribute("aria-label", UI.pause); label.textContent = UI.pause; now.classList.remove("err"); });
+  a.addEventListener("pause", () => { icon.setAttribute("d", PLAY); pp.setAttribute("aria-label", UI.listen); label.textContent = a.ended ? UI.replay : UI.resume; });
+  a.addEventListener("ended", () => { setActive(-1); label.textContent = UI.replay; });
+  document.querySelectorAll(".langs a").forEach(l => l.addEventListener("click", () => { try { localStorage.setItem("lang", l.dataset.lang); } catch (e) {} }));
   a.addEventListener("timeupdate", () => {
     const t = a.currentTime;
     if (!seeking) { seek.value = t; cur.textContent = fmt(t); }
@@ -200,7 +216,7 @@ input[type=range]{width:100%; margin:4px 0 0; accent-color:var(--primary); heigh
   });
 
   if ("mediaSession" in navigator) {
-    navigator.mediaSession.metadata = new MediaMetadata({ title: "{{TITLE}}", artist: "{{SCHOOL}}", artwork: [{ src: "img/crest.png", sizes: "256x256", type: "image/png" }] });
+    navigator.mediaSession.metadata = new MediaMetadata({ title: "{{TITLE}}", artist: "{{SCHOOL}}", artwork: [{ src: "{{P}}img/crest.png", sizes: "256x256", type: "image/png" }] });
     navigator.mediaSession.setActionHandler("play", () => a.play());
     navigator.mediaSession.setActionHandler("pause", () => a.pause());
   }

@@ -1,7 +1,7 @@
-"""Generate narration: one clip per segment, then one MP3 with a timings file.
+"""Generate narration per language: one clip per segment, joined into one MP3 plus a timings file.
 
-Usage: .venv/bin/python tools/build_audio.py [voice]
-Voices: uz-UZ-SardorNeural (male), uz-UZ-MadinaNeural (female)
+Usage: .venv/bin/python tools/build_audio.py [uz|ru|en ...]   (no argument = all languages)
+Voice, spoken-only respellings ("say") and text come from content/<lang>.json.
 """
 import asyncio, json, re, subprocess, sys, tempfile
 from pathlib import Path
@@ -9,24 +9,29 @@ from pathlib import Path
 import edge_tts
 
 ROOT = Path(__file__).resolve().parent.parent
-VOICE = sys.argv[1] if len(sys.argv) > 1 else "uz-UZ-SardorNeural"
 PAUSE = {"h1": 0.9, "h2": 0.6, "p": 0.8}   # silence after each segment, seconds
 RATE = "-5%"                                 # a touch slower than default for a public space
 
-# Spoken-only respellings; the page still shows content.json as written.
-SAY = [
-    ("VOSIQ International School", "Vosiq Interneshnl Skul"),  # English, not Uzbek letter-by-letter
-    ("ILMdir", "ilmdir"),                                       # caps would be spelled out
-    ("(atom)", "(átom)"), ("(atom ", "(átom "),                 # first-syllable stress, short a (not "aa-tom")
-]
 
-
-def speakable(text):
-    for a, b in SAY:
+def speakable(text, c):
+    for a, b in c.get("say", []):
         text = text.replace(a, b)
-    # o‘ / g‘ as U+02BB, the official Uzbek letter; a plain ' reads as a short glottal stop
-    text = re.sub(r"([OoGg])['‘’`]", "\\1\u02bb", text)
-    return re.sub(r"['’`]", "\u02bc", text)
+    if c["lang"] == "uz":
+        # o‘ / g‘ as U+02BB, the official Uzbek letter; a plain ' reads as a short glottal stop
+        text = re.sub(r"([OoGg])['‘’`]", "\\1\u02bb", text)
+        text = re.sub(r"['’`]", "\u02bc", text)
+    return text
+
+
+async def synth(text, voice, path, tries=6):
+    # the free Edge endpoint drops requests at random when called in quick succession; back off and retry
+    for k in range(tries):
+        try:
+            return await edge_tts.Communicate(text, voice, rate=RATE).save(str(path))
+        except edge_tts.exceptions.NoAudioReceived:
+            if k == tries - 1:
+                raise
+            await asyncio.sleep(2 * (k + 1))
 
 
 def duration(path):
@@ -35,14 +40,13 @@ def duration(path):
     return float(out.stdout)
 
 
-async def main():
-    content = json.loads((ROOT / "content.json").read_text())
+async def build(lang):
+    c = json.loads((ROOT / "content" / f"{lang}.json").read_text())
     tmp = Path(tempfile.mkdtemp())
     parts, timings, t = [], [], 0.0
-    for i, seg in enumerate(content["segments"]):
+    for i, seg in enumerate(c["segments"]):
         clip = tmp / f"{i:02d}.mp3"
-        text = speakable(seg["text"])
-        await edge_tts.Communicate(text, VOICE, rate=RATE).save(str(clip))
+        await synth(speakable(seg["text"], c), c["voice"], clip)
         wav = tmp / f"{i:02d}.wav"
         pad = PAUSE[seg["type"]]
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(clip), "-af", f"apad=pad_dur={pad}",
@@ -53,12 +57,16 @@ async def main():
         t += d
     lst = tmp / "list.txt"
     lst.write_text("".join(f"file '{p}'\n" for p in parts))
-    out = ROOT / "docs" / "audio" / "narration.mp3"
+    outdir = ROOT / "docs" / "audio" / lang
+    outdir.mkdir(parents=True, exist_ok=True)
+    out = outdir / "narration.mp3"
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", str(lst),
                     "-c:a", "libmp3lame", "-b:a", "64k", str(out)], check=True)
-    (ROOT / "docs" / "audio" / "timings.json").write_text(
-        json.dumps({"voice": VOICE, "duration": round(t, 3), "segments": timings}, indent=1))
-    print(f"{out}  {t:.1f}s  {out.stat().st_size // 1024} KB  voice={VOICE}")
+    (outdir / "timings.json").write_text(
+        json.dumps({"voice": c["voice"], "duration": round(t, 3), "segments": timings}, indent=1))
+    print(f"{out.relative_to(ROOT)}  {t:.1f}s  {out.stat().st_size // 1024} KB  voice={c['voice']}")
 
 
-asyncio.run(main())
+langs = sys.argv[1:] or sorted(p.stem for p in (ROOT / "content").glob("*.json"))
+for lang in langs:
+    asyncio.run(build(lang))

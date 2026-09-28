@@ -22,6 +22,7 @@ TESTS = {
     "atom_3_accent": "mikro olamni (átom tuzilishi)",
     "atom_4_capital": "mikro olamni (Atom tuzilishi)",
     "atom_5_atam": "mikro olamni (atam tuzilishi)",
+    "atom_6_aatom": "mikro olamni (aatom tuzilishi)",
 }
 
 

@@ -1,0 +1,81 @@
+{
+ "lang": "uz",
+ "label": "UZ",
+ "voice": "uz-UZ-SardorNeural",
+ "title": "Xush kelibsiz!",
+ "school": "VOSIQ International School",
+ "ui": {
+  "badge": "Atrium installyatsiyasi",
+  "lede": "Audio qo‘llanma, {min} daqiqa. Matnning istalgan qismini bosing — o‘sha joydan eshitasiz.",
+  "listen": "Tinglash",
+  "pause": "Pauza",
+  "resume": "Davom ettirish",
+  "replay": "Qayta tinglash",
+  "speed": "Tezlik",
+  "seek": "Audio holati",
+  "error": "Audio yuklanmadi. Internetni tekshirib, qayta bosing.",
+  "photo_alt": "Atriumdagi installyatsiya: markazda ko‘p qirrali shakl, atrofida kesishgan yorug‘ orbitalar va sayyoralar",
+  "lang_label": "Til"
+ },
+ "say": [
+  [
+   "VOSIQ International School",
+   "Vosiq Interneshnl Skul"
+  ],
+  [
+   "ILMdir",
+   "ilmdir"
+  ],
+  [
+   "(atom)",
+   "(aatom)"
+  ],
+  [
+   "(atom ",
+   "(aatom "
+  ]
+ ],
+ "segments": [
+  {
+   "type": "h1",
+   "text": "Xush kelibsiz!"
+  },
+  {
+   "type": "p",
+   "text": "Siz guvohi bo‘lib turgan bu betakror installyatsiya shunchaki me'moriy yorug'lik manbai emas, balki VOSIQ International School ta'lim dargohining tub mohiyatini aks ettiruvchi chuqur falsafiy ramzdir."
+  },
+  {
+   "type": "h2",
+   "text": "Ilm — koinot markazi"
+  },
+  {
+   "type": "p",
+   "text": "E'tibor qilsangiz, kompozitsiyaning qoq markazida ko‘p qirrali, quyosh misol nur taratuvchi shakl o'rin olgan. Bu – Ilm-fan. Xuddi quyosh o'z atrofidagi sayyoralarga yorug‘lik va hayot bag‘ishlaganidek, ilm ham insoniyat tafakkurini nurga to'ldiradi. Shaklning ko‘p qirraliligi esa bilimlarning sarhadsizligi va rang-barangligiga ishoradir."
+  },
+  {
+   "type": "h2",
+   "text": "Makro va Mikro olam uyg'unligi"
+  },
+  {
+   "type": "p",
+   "text": "Asar bir vaqtning o‘zida ham makro olamni (quyosh tizimi), ham mikro olamni (atom tuzilishi) o‘zida namoyon etadi. Installyatsiyani o'rab turgan orbitalar odatiy tizimlardagi kabi yagona gorizontal tekislikda emas, balki xuddi atom yadrosi atrofida aylanayotgan zarralar kabi turli yo‘nalishlarda kesishadi. Bu orqali makon va zamonning uzluksiz harakati tasvirlangan."
+  },
+  {
+   "type": "h2",
+   "text": "Falsafiy ma'no"
+  },
+  {
+   "type": "p",
+   "text": "Borliqdagi eng mitti zarrachadan (atom) tortib, eng bepoyon galaktikalargacha (koinot) – har birining o‘z harakat markazi va tayanch nuqtasi bor."
+  },
+  {
+   "type": "p",
+   "text": "Har qanday sivilizatsiya, har qanday rivojlanish va shaxs kamolotining yagona tayanch nuqtasi esa — ILMdir.",
+   "emphasis": true
+  },
+  {
+   "type": "p",
+   "text": "Atrium bo'ylab taralayotgan bu nur, maktabimiz o'quvchilari uchun hamisha izlanish, yaratuvchanlik va yangi kashfiyotlar sari yetaklovchi mayoq bo'lib xizmat qiladi."
+  }
+ ]
+}

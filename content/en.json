@@ -1,0 +1,30 @@
+{
+ "lang": "en", "label": "EN", "voice": "en-GB-RyanNeural",
+ "title": "Welcome!",
+ "school": "VOSIQ International School",
+ "ui": {
+  "badge": "Atrium installation",
+  "lede": "Audio guide, {min} min. Tap any paragraph to listen from there.",
+  "listen": "Listen", "pause": "Pause", "resume": "Resume", "replay": "Listen again",
+  "speed": "Speed", "seek": "Audio position",
+  "error": "The audio didn't load. Check your connection and tap again.",
+  "photo_alt": "The atrium installation: a many-faceted form at the centre, surrounded by crossing lit orbits and planets",
+  "lang_label": "Language"
+ },
+ "say": [
+  ["VOSIQ", "Vosiq"],
+  ["KNOWLEDGE", "knowledge"]
+ ],
+ "segments": [
+  {"type": "h1", "text": "Welcome!"},
+  {"type": "p", "text": "The unique installation before you is more than an architectural source of light. It is a profound philosophical symbol that reflects the very essence of VOSIQ International School as a place of learning."},
+  {"type": "h2", "text": "Knowledge — the centre of the universe"},
+  {"type": "p", "text": "Notice that at the very heart of the composition sits a many-faceted form that radiates light like the sun. This is knowledge and science. Just as the sun gives light and life to the planets around it, knowledge fills human thought with light. The many facets of the form point to how boundless and diverse knowledge is."},
+  {"type": "h2", "text": "The harmony of the macro and micro worlds"},
+  {"type": "p", "text": "The work portrays the macro world (the solar system) and the micro world (the structure of the atom) at the same time. The orbits around the installation do not lie on a single horizontal plane, as in familiar systems. Like particles circling an atomic nucleus, they cross one another in different directions, depicting the ceaseless motion of space and time."},
+  {"type": "h2", "text": "The philosophical meaning"},
+  {"type": "p", "text": "From the tiniest particle of existence (the atom) to the most boundless galaxies (the universe), each has its own centre of motion and its own point of support."},
+  {"type": "p", "text": "And the one point of support for every civilisation, every advance and the growth of every person is KNOWLEDGE.", "emphasis": true},
+  {"type": "p", "text": "The light spreading through this atrium will always serve our students as a beacon, guiding them towards inquiry, creativity and new discoveries."}
+ ]
+}
