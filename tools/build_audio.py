@@ -17,7 +17,7 @@ RATE = "-5%"                                 # a touch slower than default for a
 SAY = [
     ("VOSIQ International School", "Vosiq Interneshnl Skul"),  # English, not Uzbek letter-by-letter
     ("ILMdir", "ilmdir"),                                       # caps would be spelled out
-    ("(atom)", "(atoom)"), ("(atom ", "(atoom "),                 # stress on the last syllable
+    ("(atom)", "(átom)"), ("(atom ", "(átom "),                 # first-syllable stress, short a (not "aa-tom")
 ]
 
 
