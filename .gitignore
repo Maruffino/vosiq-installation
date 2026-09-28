@@ -1,5 +1,4 @@
 .venv/
-sample_*.mp3
 __pycache__/
 pronunciation_tests/
 photo.jpg
